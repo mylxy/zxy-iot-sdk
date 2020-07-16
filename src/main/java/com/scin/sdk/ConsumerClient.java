@@ -1,19 +1,15 @@
 package com.scin.sdk;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.scin.sdk.api.AppUser;
 import com.scin.sdk.api.Authority;
 import com.scin.sdk.bean.base.Cat;
 import com.scin.sdk.bean.base.Constant;
-import com.scin.sdk.bean.base.Message;
 import com.scin.sdk.bean.base.Tiger;
 import com.scin.sdk.enums.SystemStatusEnum;
 import com.scin.sdk.exception.BusinessException;
 import com.scin.sdk.utils.HttpUtil;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.kafka.clients.admin.AdminClientConfig;
@@ -28,13 +24,11 @@ import org.apache.kafka.common.errors.TopicAuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -90,6 +84,16 @@ public class ConsumerClient {
             default:
                 throw BusinessException.of(SystemStatusEnum.IDENTITY_NOT_SUPPORT);
         }
+    }
+
+    /**
+     * 重新设置kafka属性信息
+     *
+     * @param key
+     * @param value
+     */
+    public void setProperties(String key, String value) {
+        this.kafkaConfig.setProperty(key, value);
     }
 
     /**
