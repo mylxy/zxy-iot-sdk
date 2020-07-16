@@ -8,3 +8,6 @@
 ##
 1.0.3
 增加gps类
+
+## 发布
+mvn clean install deploy -DskipTests -P release -Dgpg.passphrase=baby#520
