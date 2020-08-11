@@ -19,7 +19,9 @@ import org.junit.Test;
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * <p>
@@ -33,11 +35,16 @@ public class TestClient {
     // 原始数据订阅
     @Test
     public void test () {
-        String appKey = "rsPlMMtzDLY";
-        String secret = "x8oEW4SQ2i3ZY8HL";
-        ConsumerClient client = new ConsumerClient("https://dev-api-iot-company.hzzxxd.com/company/application/subAuth", appKey, secret);
+        String appKey = "WsZeJ9ZBcIN";
+        String secret = "L9tJIBktNrwCA1RC";
+        ConsumerClient client = new ConsumerClient(appKey, secret);
 
-        client.raw("rsp.gps.rsPlMMtzDLY", 1, cats -> {
+        Set<String> topics  = new HashSet<>();
+        topics.add("rsp.status.WsZeJ9ZBcIN");
+        topics.add("rsp.report.WsZeJ9ZBcIN");
+        topics.add("rsp.gps.WsZeJ9ZBcIN");
+        topics.add("rsp.warn.WsZeJ9ZBcIN");
+        client.raw(topics, 1, cats -> {
             cats.forEach(cat -> {
                 System.out.println("----------------------------");
                 //时间戳
