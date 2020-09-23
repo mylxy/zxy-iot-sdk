@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 /**
  * <p>
  *     // 原始数据
- * type Cat struct {
+ *  type Cat struct {
  * 	ClientID  string `json:"-"`
  * 	Identity  string `json:"identity"`
  * 	Timestamp int64  `json:"timestamp"`

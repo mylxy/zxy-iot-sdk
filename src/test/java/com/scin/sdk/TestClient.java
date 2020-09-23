@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.scin.sdk.bean.base.Cat;
 import com.scin.sdk.bean.base.Tiger;
 import com.scin.sdk.bean.battery.BmsData;
-import com.scin.sdk.bean.battery.BmsWarnData;
 import com.scin.sdk.bean.battery.SensorShockData;
 import com.scin.sdk.bean.share.GpsData;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.scin.sdk.bean.base;
 
 import com.alibaba.fastjson.JSONObject;
-import com.scin.sdk.ConsumerClient;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.slf4j.Logger;
@@ -21,11 +21,6 @@ public class Tiger extends Message {
     private final Logger logger = LoggerFactory.getLogger(Tiger.class);
 
     /**
-     * 数据标识
-     */
-    private Integer cmdKey;
-
-    /**
      * 数据解析后的封装类型
      */
     private Class dataClazz;
@@ -33,6 +28,7 @@ public class Tiger extends Message {
     /**
      * 数据
      */
+    @JSONField(alternateNames = {"payload", "data"})
     private JSONObject data;
 
     /**

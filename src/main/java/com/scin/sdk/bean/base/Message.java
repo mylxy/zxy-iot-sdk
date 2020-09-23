@@ -41,4 +41,13 @@ public class Message implements Serializable {
      */
     private Long timestamp;
 
+    /**
+     * 数据标识
+     */
+    private Integer cmdKey;
+
+    /**
+     * 是否解析过 0原始数据 1解析数据 2加工数据
+     */
+    private Integer Parsed;
 }
