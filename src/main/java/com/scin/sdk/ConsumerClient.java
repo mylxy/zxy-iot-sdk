@@ -64,6 +64,7 @@ public class ConsumerClient {
 
     public ConsumerClient(String key, String secret) {
         this.authority = HttpUtil.sign(url, new AppUser(key, secret));
+        this.parseClassMap = initParseClassMap();
         this.kafkaConfig = initKafkaConfig();
     }
 

@@ -22,6 +22,7 @@ public enum SystemStatusEnum implements StatusEnum {
     KAFKA_GROUP_NOT_AUTHORIZED(1007, "Kafka消费组无权限, 请联系智享云"),
     IDENTITY_NOT_SUPPORT(1008, "此品类SDK暂不支持, 请升级SDK"),
     PARSE_CLASS_SUPPORT(1009, "此解析封装类暂不支持"),
+    IO_EXCEPTION(1010, "HTTP请求IOException"),
     ;
 
     SystemStatusEnum(int code, String description) {

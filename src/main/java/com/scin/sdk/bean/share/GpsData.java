@@ -22,5 +22,6 @@ public class GpsData implements Serializable {
     private Integer length;     //定位信息长度
     private Gps gps;            //GPS信息
     private String  gsmContext; //基站信息内容
+    private Gsm gsm;//基站解析数据
 
 }

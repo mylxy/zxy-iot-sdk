@@ -5,7 +5,7 @@
 
 	<groupId>com.hzzxxd.sdk</groupId>
 	<artifactId>zxy-data-subscribe</artifactId>
-	<version>1.0.11.RELEASE</version>
+	<version>1.0.16.RELEASE</version>
     <name>ZhiXiangYun data subscription SDK</name>
     <description>After the battery, vehicle, and power cabinet equipment are connected to the IoT platform, users may subscribe to the SDK through data to subscribe to the data reported by the device, including status, positioning, logs, configuration, unique data, etc., and then according to their own business processes Develop your own personalized application service</description>
     <url>https://thoughts.teambition.com/share/5ebdfdb0c085db001b05c4c6#title=智享云服务端订阅</url>

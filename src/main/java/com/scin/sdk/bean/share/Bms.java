@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +41,14 @@ public class Bms implements Serializable {
     private Integer bmsTemperatureHigher;  //Bit_12：BMS温度过高
     private Integer humidityHigher;        //Bit_16：湿度过高
 
+    private Integer overLimit;                  //Bit_19:充电电流严重超限报警
+    private Integer highTemperatureMosProtect;  //Bit_20:MOS高温保护
+    private Integer chargingMosFault;           //Bit_21:充电MOS故障
+    private Integer releaseMosFault;            //Bit_22:放电MOS故障
+    private Integer sensorLapse;                //Bit_23:电流传感器失效
+    private Integer aeeFault;                   //Bit_24:AFE故障
+    private Integer lowerTemperatureProtect;    //Bit_25:环境低温保护
+
     // BMS状态数据
     private Integer charging;              //Bit_0：充电
     private Integer fullyCharged;          //Bit_1：充饱
@@ -73,41 +82,69 @@ public class Bms implements Serializable {
         return 0;
     }
 
-    public Integer faultStatus() {
+    public List<Integer> faultCodes() {
+        List<Integer> list = new ArrayList<>();
         if (this.overCharging != null && this.overCharging != 0) {
-            return 1;
+            list.add(2);
         }
         if (this.overVoltage != null && this.overVoltage != 0) {
-            return 1;
+            list.add(3);
         }
         if (this.shortCircuit != null && this.shortCircuit != 0) {
-            return 1;
+            list.add(5);
         }
         if (this.overShortCircuit != null && this.overShortCircuit != 0) {
-            return 1;
+            list.add(6);
         }
         if (this.lowerVoltage != null && this.lowerVoltage != 0) {
-            return 1;
+            list.add(7);
         }
         if (this.cellOpen != null && this.cellOpen != 0) {
-            return 1;
+            list.add(8);
         }
         if (this.temperatureOpen != null && this.temperatureOpen != 0) {
-            return 1;
+            list.add(9);
         }
         if (this.cellTemperatureHigher != null && this.cellTemperatureHigher != 0) {
-            return 1;
+            list.add(10);
         }
         if (this.cellTemperatureLower != null && this.cellTemperatureLower != 0) {
-            return 1;
+            list.add(11);
         }
         if (this.bmsTemperatureHigher != null && this.bmsTemperatureHigher != 0) {
-            return 1;
+            list.add(12);
         }
         if (this.humidityHigher != null && this.humidityHigher != 0) {
-            return 1;
+            list.add(16);
         }
-        return 0;
+        if (this.protocols >= 4) {
+            if (this.overLimit != null && this.overLimit != 0 ){
+                list.add(19);
+            }
+            if (this.highTemperatureMosProtect != null && this.highTemperatureMosProtect != 0 ){
+                list.add(20);
+            }
+            if (this.chargingMosFault != null && this.chargingMosFault != 0 ){
+                list.add(21);
+            }
+            if (this.releaseMosFault != null && this.releaseMosFault != 0 ){
+                list.add(22);
+            }
+            if (this.sensorLapse != null && this.sensorLapse != 0 ){
+                list.add(23);
+            }
+            if (this.aeeFault != null && this.aeeFault != 0 ){
+                list.add(24);
+            }
+            if (this.lowerTemperatureProtect != null && this.lowerTemperatureProtect != 0 ){
+                list.add(25);
+            }
+        }
+        return list;
+    }
+
+    public Integer faultStatus() {
+        return faultCodes().size() == 0 ? 0 : 1;
     }
 
 }

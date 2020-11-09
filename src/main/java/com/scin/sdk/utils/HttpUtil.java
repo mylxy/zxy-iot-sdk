@@ -9,6 +9,8 @@ import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 /**
  * @author 最爱吃小鱼
  */
@@ -50,9 +52,9 @@ public class HttpUtil {
                 throw BusinessException.of(r.getCode(), r.getMessage(), r.getLocal());
             }
             return r.getData();
-        } catch(Exception e) {
+        } catch(IOException e) {
             log.error(e.getMessage(), e);
-            return null;
+            throw BusinessException.of(SystemStatusEnum.IO_EXCEPTION);
         }
     }
 }
