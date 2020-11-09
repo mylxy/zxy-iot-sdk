@@ -9,5 +9,8 @@
 1.0.3
 增加gps类
 
+1.0.17 
+1. 兼容软件版本05，增加了soc, 环境温度，电芯最高温度，电芯最低温度
+
 ## 发布
 mvn clean install deploy -DskipTests -P release -Dgpg.passphrase=baby#520

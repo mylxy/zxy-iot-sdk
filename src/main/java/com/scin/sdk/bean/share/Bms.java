@@ -48,6 +48,7 @@ public class Bms implements Serializable {
     private Integer sensorLapse;                //Bit_23:电流传感器失效
     private Integer aeeFault;                   //Bit_24:AFE故障
     private Integer lowerTemperatureProtect;    //Bit_25:环境低温保护
+    private Integer innerFault;                 //Bit_26:内部通信异常
 
     // BMS状态数据
     private Integer charging;              //Bit_0：充电
@@ -63,11 +64,15 @@ public class Bms implements Serializable {
     private BigDecimal currentElectricity;    //当前电流
     private Integer temperature1;             //BMS温度1
     private Integer temperature2;             //BMS温度2
+    private Integer envTemperature;           //05版本环境温度
     private List<BigDecimal> cellVoltages;    //电芯电压, 根据电芯串数知道有多少电芯电压
     private List<Integer> cellTemperatures;   //电芯温度
+    private Integer maxHighTemperature;       //05版本电芯最高温度
+    private Integer maxLowerTemperature;      //05版本电芯最低温度
     private Integer cycleCount;               //循环次数
     private BigDecimal leftElectricQuantity;  //剩余电池电量,单位:0.1AH
     private BigDecimal totalElectricQuantity; //总电池电量,单位:0.1AH
+    private Integer soc;                      //剩余电量 只有05版本包含 单位:%
     private Integer soh;                      //电池健康状态 只有03版本包含
     private List<Integer> humiditys;                 //湿度
     private List<Integer> waterStages;               //水位
@@ -138,6 +143,9 @@ public class Bms implements Serializable {
             }
             if (this.lowerTemperatureProtect != null && this.lowerTemperatureProtect != 0 ){
                 list.add(25);
+            }
+            if (this.envTemperature != null && this.envTemperature != 0 ){
+                list.add(26);
             }
         }
         return list;

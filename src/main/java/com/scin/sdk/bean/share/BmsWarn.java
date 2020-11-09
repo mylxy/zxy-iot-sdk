@@ -36,5 +36,6 @@ public class BmsWarn implements Serializable {
     private Integer sensorLapse;                //Bit_23:电流传感器失效
     private Integer aeeFault;                   //Bit_24:AFE故障
     private Integer lowerTemperatureProtect;    //Bit_25:环境低温保护
+    private Integer innerFault;                 //Bit_26:内部通信异常
 
 }
