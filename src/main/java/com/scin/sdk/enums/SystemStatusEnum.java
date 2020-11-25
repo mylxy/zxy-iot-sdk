@@ -23,6 +23,7 @@ public enum SystemStatusEnum implements StatusEnum {
     IDENTITY_NOT_SUPPORT(1008, "此品类SDK暂不支持, 请升级SDK"),
     PARSE_CLASS_SUPPORT(1009, "此解析封装类暂不支持"),
     IO_EXCEPTION(1010, "HTTP请求IOException"),
+    CMDKEYOFCLASS_NO_CONFIG(1011, "cmdKey对的数据反序列化未配置"),
     ;
 
     SystemStatusEnum(int code, String description) {

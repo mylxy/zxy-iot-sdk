@@ -20,6 +20,13 @@ import java.util.Map;
 public class Constant {
 
     /**
+     * 品类标识
+     */
+    public final static String BATTERY = "battery";
+    public final static String VEHICLE = "vehicle";
+    public final static String CABINET = "cabinet";
+
+    /**
      * 电池数据解析MAP
      */
     public final static Map<Integer, Class> BATTERY_DATA_CLASS = new HashMap<>();

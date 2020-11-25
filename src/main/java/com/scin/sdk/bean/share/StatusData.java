@@ -17,6 +17,9 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class StatusData implements Serializable {
 
-    private Integer status; //1上线，0离线
+    /**
+     * 1上线，0离线
+     */
+    private Integer status;
 
 }

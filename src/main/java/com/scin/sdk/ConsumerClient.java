@@ -1,12 +1,9 @@
 package com.scin.sdk;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.scin.sdk.api.AppUser;
 import com.scin.sdk.api.Authority;
-import com.scin.sdk.bean.base.Cat;
-import com.scin.sdk.bean.base.Constant;
-import com.scin.sdk.bean.base.Tiger;
+import com.scin.sdk.bean.base.Message;
 import com.scin.sdk.enums.SystemStatusEnum;
 import com.scin.sdk.exception.BusinessException;
 import com.scin.sdk.utils.HttpUtil;
@@ -24,11 +21,9 @@ import org.apache.kafka.common.errors.TopicAuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -57,35 +52,16 @@ public class ConsumerClient {
      */
     private String url = "https://api-iot-company.hzzxxd.com/company/application/subAuth";
 
-    /**
-     * 数据标识与封装的解析类对应关系
-     */
-    public Map<Integer, Class> parseClassMap;
-
     public ConsumerClient(String key, String secret) {
         this.authority = HttpUtil.sign(url, new AppUser(key, secret));
-        this.parseClassMap = initParseClassMap();
         this.kafkaConfig = initKafkaConfig();
     }
 
     public ConsumerClient(String url, String key, String secret) {
         this.authority = HttpUtil.sign(url, new AppUser(key, secret));
-        this.parseClassMap = initParseClassMap();
         this.kafkaConfig = initKafkaConfig();
     }
 
-    private Map<Integer, Class> initParseClassMap() {
-        switch (authority.getIdentity()){
-            case "battery":
-                return Constant.BATTERY_DATA_CLASS;
-            case "vehicle":
-                return Constant.VEHICLE_DATA_CLASS;
-            case "cabinet":
-                return Constant.CABINET_DATA_CLASS;
-            default:
-                throw BusinessException.of(SystemStatusEnum.IDENTITY_NOT_SUPPORT);
-        }
-    }
 
     /**
      * 重新设置kafka属性信息
@@ -120,93 +96,16 @@ public class ConsumerClient {
     }
 
     /**
-     * 解析原始数据
+     * 数据订阅
      *
      * @param topic
      * @param action
      */
-    public void raw(String topic, int groupNum, Consumer<List<Cat>> action) {
-        raw(Collections.singleton(topic), groupNum, action);
+    public void subscribe(String topic, int groupNum, Consumer<List<Message>> action) {
+        subscribe(Collections.singleton(topic), groupNum, action);
     }
-    public void raw(Set<String> topics, int groupNum, Consumer<List<Cat>> action) {
-        Type type = new TypeReference<Cat>(){}.getType();
-        listen(topics, groupNum, type, action);
-    }
-    /**
-     * 订阅解析数据，自己订阅数据类型
-     *
-     * @param topic 主题
-     * @param groupNum 消费组
-     * @param action 客户消费动作
-     * @param clazz 返回的数据类型
-     * @param <T>
-     */
-    public <T> void ripe(Class<T> clazz, String topic, int groupNum, Consumer<List<Tiger>> action) {
-        ripe(clazz, Collections.singleton(topic), groupNum, action);
-    }
-    public void ripe(String topic, int groupNum, Consumer<List<Tiger>> action) {
-        ripe(Collections.singleton(topic), groupNum, action);
-    }
-    public void ripe(Set<String> topics, int groupNum, Consumer<List<Tiger>> action) {
-        ripe(null, topics, groupNum, action);
-    }
-    public <T> void ripe(Class<T> clazz, Set<String> topics, int groupNum, Consumer<List<Tiger>> action) {
-        Consumer<List<Tiger>> messages = findConsumerOfCmdKey(clazz, action);
-        Type type = new TypeReference<Tiger>(){}.getType();
-        listen(topics, groupNum, type, messages);
-    }
-
-    /**
-     * 消费信息
-     *
-     * @param clazz
-     * @param action
-     * @return
-     */
-    private Consumer<List<Tiger>> findConsumerOfCmdKey(Class clazz, Consumer<List<Tiger>> action) {
-        Integer cmdKey = findCmdKey(clazz);
-
-        if (cmdKey == null) {
-            return tigers -> {
-                List<Tiger> messages = tigers.stream().filter(t -> parseClassMap.containsKey(t.getCmdKey())).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(messages)) {
-                    messages.forEach(m -> m.setDataClazz(parseClassMap.get(m.getCmdKey())));
-                    action.accept(tigers);
-                }
-            };
-        }
-
-        return tigers -> {
-            List<Tiger> messages = tigers.stream()
-                    .filter(t -> t.getCmdKey().equals(cmdKey))
-                    .filter(t -> parseClassMap.containsKey(t.getCmdKey())).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(messages)) {
-                messages.forEach(m -> m.setDataClazz(clazz));
-                action.accept(tigers);
-            }
-        };
-    }
-
-    /**
-     * 找出clazz对应的数据标识，解析类与数据标识是一一对应的
-     * @param clazz
-     * @return
-     */
-    private Integer findCmdKey(Class clazz) {
-        Integer cmdKey = null;
-        if (clazz == null) {
-            return cmdKey;
-        }
-        for (Map.Entry<Integer, Class> entry : parseClassMap.entrySet()) {
-            if (entry.getValue() == clazz) {
-                cmdKey = entry.getKey();
-                break;
-            }
-        }
-        if (cmdKey == null) {
-            throw BusinessException.of(SystemStatusEnum.PARSE_CLASS_SUPPORT);
-        }
-        return cmdKey;
+    public void subscribe(Set<String> topics, int groupNum, Consumer<List<Message>> action) {
+        listen(topics, groupNum, action);
     }
 
     /**
@@ -214,11 +113,10 @@ public class ConsumerClient {
      *
      * @param topics
      * @param groupNum
-     * @param type
      * @param action
      * @param <T>
      */
-    private <T> void listen(Set<String> topics, int groupNum,  Type type, Consumer<List<T>> action) {
+    private <T> void listen(Set<String> topics, int groupNum, Consumer<List<Message>> action) {
         // 检验topic是否为空
         if (topics == null || topics.isEmpty()) {
             throw BusinessException.of(SystemStatusEnum.SUBSCRIBE_TOPIC_EMPTY);
@@ -244,11 +142,11 @@ public class ConsumerClient {
                 if (records.isEmpty()) {
                     continue;
                 }
-                List<T> messages = new ArrayList<>(16);
+                List<Message> messages = new ArrayList<>(16);
                 for (ConsumerRecord<String, byte[]> record : records) {
-                    T t = parse(record, type);
-                    if (t != null) {
-                        messages.add(t);
+                    Message m = parse(record);
+                    if (m != null) {
+                        messages.add(m);
                     }
                 }
                 if (CollectionUtils.isNotEmpty(messages)) {
@@ -274,14 +172,11 @@ public class ConsumerClient {
      * 数据解析
      *
      * @param record 数据
-     * @param type 解析数据类型
-     * @param <T> Cat、Tiger
      * @return
      */
-    private <T> T parse(ConsumerRecord<String,byte[]> record, Type type) {
+    private Message parse(ConsumerRecord<String,byte[]> record) {
         try {
-            T t = JSONObject.parseObject(record.value(), type);
-            return t;
+            return JSONObject.parseObject(record.value(), Message.class);
         } catch (Exception e) {
             logger.error("数据序列化失败:" + e.getMessage(), e);
             return null;
