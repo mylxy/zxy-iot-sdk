@@ -1,6 +1,7 @@
 package com.scin.sdk.bean.base;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.scin.sdk.bean.share.StatusData;
 import com.scin.sdk.enums.SystemStatusEnum;
 import com.scin.sdk.exception.BusinessException;
@@ -64,6 +65,12 @@ public class Message implements Serializable {
     private String payload;
 
     /**
+     * 数据负载对应着的解析类
+     */
+    @JSONField(serialize=false , deserialize = false)
+    private Class clazz;
+
+    /**
      * 解析类型是否一致
      *
      * @param clazz
@@ -89,7 +96,7 @@ public class Message implements Serializable {
                 && StringUtils.equalsAny(payload, "0", "1")
         );
         if (isStatusData) {
-            return (T)new StatusData().setStatus(Integer.valueOf(payload.toString()));
+            return (T)new StatusData().setStatus(Integer.valueOf(payload));
         }
         return JSONObject.parseObject(payload, clazz);
     }
@@ -97,20 +104,23 @@ public class Message implements Serializable {
     /**
      * 取得品类的数据标识对应着的解析类
      */
-    private <T> Class<T> cmdKeyOfClass() {
-        switch (identity) {
-            case BATTERY: {
-                return Constant.BATTERY_DATA_CLASS.get(cmdKey);
-            }
-            case CABINET: {
-                return Constant.CABINET_DATA_CLASS.get(cmdKey);
-            }
-            case VEHICLE: {
-                return Constant.VEHICLE_DATA_CLASS.get(cmdKey);
-            }
-            default: {
-                return null;
+    public <T> Class<T> cmdKeyOfClass() {
+        if (clazz == null) {
+            switch (identity) {
+                case BATTERY: {
+                    clazz = Constant.BATTERY_DATA_CLASS.get(cmdKey);
+                }
+                case CABINET: {
+                    clazz =  Constant.CABINET_DATA_CLASS.get(cmdKey);
+                }
+                case VEHICLE: {
+                    clazz =  Constant.VEHICLE_DATA_CLASS.get(cmdKey);
+                }
+                default: {
+                    clazz =  null;
+                }
             }
         }
+        return clazz;
     }
 }

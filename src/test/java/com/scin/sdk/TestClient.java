@@ -1,7 +1,11 @@
 package com.scin.sdk;
 
+import com.alibaba.fastjson.JSONObject;
 import com.scin.sdk.bean.base.Message;
 import com.scin.sdk.bean.battery.BmsData;
+import com.scin.sdk.bean.cabinet.RefreshData;
+import com.scin.sdk.bean.cabinet.RunStatusData;
+import com.scin.sdk.bean.cabinet.WarnData;
 import com.scin.sdk.bean.share.GpsData;
 import com.scin.sdk.bean.share.StatusData;
 import com.scin.sdk.exception.BusinessException;
@@ -72,6 +76,58 @@ public class TestClient {
             client.subscribe(topics, 1, messages -> {
                 for (Message message : messages) {
                     System.out.println("playload:" + message.getPayload());
+                }
+            });
+        } catch(BusinessException e) {
+            log.error(e.getMessage(), e);
+            log.warn("数据订阅：SDK抛出异常结束, code={}, err={}, local={}", e.getCode(), e.getMessage(), e.getLocal());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Test
+    public void testCabinet() {
+        String appKey = "RLuNYVI1p4I";
+        String secret = "pbd1dcmGtlvqOfgW";
+        ConsumerClient client = new ConsumerClient(appKey, secret);
+        client.setProperties("client.id", "cabinet");
+
+        Set<String> topics = new HashSet<>();
+        topics.add("rsp.status." + appKey);
+        topics.add("parse.gps." + appKey);
+        topics.add("parse.report." + appKey);
+        topics.add("parse.warn." + appKey);
+
+        try {
+            client.subscribe(topics, 1, messages -> {
+                for (Message message : messages) {
+                    if (message.is(StatusData.class)) {
+                        StatusData d = message.getData();
+                        log.info("状态数据={}", JSONObject.toJSONString(d));
+                        continue;
+                    }
+                    if (message.is(GpsData.class)) {
+                        GpsData d = message.getData();
+                        log.info("定位数据={}", JSONObject.toJSONString(d));
+                        continue;
+                    }
+                    if (message.is(RefreshData.class)) {
+                        RefreshData d = message.getData();
+                        log.info("刷新数据={}", JSONObject.toJSONString(d));
+                        continue;
+                    }
+                    if (message.is(RunStatusData.class)) {
+                        RunStatusData d = message.getData();
+                        log.info("运行状态数据={}", JSONObject.toJSONString(d));
+                        continue;
+                    }
+                    if (message.is(WarnData.class)) {
+                        WarnData d = message.getData();
+                        log.info("告警数据={}", JSONObject.toJSONString(d));
+                        continue;
+                    }
+                    log.info("未识别数据={}", JSONObject.toJSONString(message));
                 }
             });
         } catch(BusinessException e) {
