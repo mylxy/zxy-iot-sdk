@@ -109,12 +109,15 @@ public class Message implements Serializable {
             switch (identity) {
                 case BATTERY: {
                     clazz = Constant.BATTERY_DATA_CLASS.get(cmdKey);
+                    break;
                 }
                 case CABINET: {
                     clazz =  Constant.CABINET_DATA_CLASS.get(cmdKey);
+                    break;
                 }
                 case VEHICLE: {
                     clazz =  Constant.VEHICLE_DATA_CLASS.get(cmdKey);
+                    break;
                 }
                 default: {
                     clazz =  null;

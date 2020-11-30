@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.hzzxxd.sdk</groupId>
+    <groupId>com.scin.sdk</groupId>
     <artifactId>zxy-data-subscribe</artifactId>
     <version>1.1.5.RELEASE</version>
     <name>ZhiXiangYun data subscription SDK</name>
