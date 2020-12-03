@@ -52,7 +52,7 @@ public class TestClient {
                 System.out.println(message.getDeviceNumber());
 
                 if (message.is(BmsData.class)) {
-                    BmsData d = message.getData();
+                    BmsData d = message.data();
                     System.out.println(d);
                 }
             });
@@ -103,27 +103,27 @@ public class TestClient {
             client.subscribe(topics, 1, messages -> {
                 for (Message message : messages) {
                     if (message.is(StatusData.class)) {
-                        StatusData d = message.getData();
+                        StatusData d = message.data();
                         log.info("状态数据={}", JSONObject.toJSONString(d));
                         continue;
                     }
                     if (message.is(GpsData.class)) {
-                        GpsData d = message.getData();
+                        GpsData d = message.data();
                         log.info("定位数据={}", JSONObject.toJSONString(d));
                         continue;
                     }
                     if (message.is(RefreshData.class)) {
-                        RefreshData d = message.getData();
+                        RefreshData d = message.data();
                         log.info("刷新数据={}", JSONObject.toJSONString(d));
                         continue;
                     }
                     if (message.is(RunStatusData.class)) {
-                        RunStatusData d = message.getData();
+                        RunStatusData d = message.data();
                         log.info("运行状态数据={}", JSONObject.toJSONString(d));
                         continue;
                     }
                     if (message.is(WarnData.class)) {
-                        WarnData d = message.getData();
+                        WarnData d = message.data();
                         log.info("告警数据={}", JSONObject.toJSONString(d));
                         continue;
                     }

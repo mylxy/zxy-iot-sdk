@@ -81,12 +81,12 @@ public class Message implements Serializable {
     }
 
     /**
-     * 取得负载的解析数据类型
+     * 取得负载的解析数据类型, 废弃getData, 优化解决序列化相关的问题
      *
      * @param <T>
      * @return
      */
-    public <T> T getData() {
+    public <T> T data() {
         Class<T> clazz = cmdKeyOfClass();
         if (clazz == null) {
             throw BusinessException.of(SystemStatusEnum.CMDKEYOFCLASS_NO_CONFIG);
@@ -125,5 +125,14 @@ public class Message implements Serializable {
             }
         }
         return clazz;
+    }
+
+    /**
+     * 设备的唯一标识
+     *
+     * @return
+     */
+    public String clientId() {
+        return String.format("%s;%s;%s", deviceNumber, productKey, identity);
     }
 }

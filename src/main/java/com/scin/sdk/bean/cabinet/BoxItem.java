@@ -1,5 +1,8 @@
 package com.scin.sdk.bean.cabinet;
 
+import com.scin.sdk.bean.share.Bms;
+import com.scin.sdk.bean.share.BmsStatus;
+import com.scin.sdk.bean.share.BmsWarn;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -28,6 +31,8 @@ public class BoxItem implements Serializable {
     private Integer chargerStatus;//充电器状态
     private BigDecimal chargerVoltage;//充电器电压
     private BigDecimal chargerCurrent;//充电器电流
+    private Integer chargerTempHave;//存在充电器温度值（0x00不存在，0x01存在
+    private BigDecimal chargerTemp;//充电器温度
     private Integer queryBoxStatusError;//查询格口状态异常
     private Integer batteryLoginError;//电池登录异常
     private Integer noGoodsError;//无到位，有电池异常
@@ -38,8 +43,9 @@ public class BoxItem implements Serializable {
     private String batteryId;//电池ID
     private BigDecimal batteryCapacity;//电量
     private Integer batteryType;// 电池类型
-    private String bmsStatus;//bms状态信息
-    private String bmsPayload;//bms负载数据
+    private BmsStatus bmsStatus;//bms状态信息
+    private BmsWarn bmsWarn;//bms告警信息
+    private Bms bms;//bms负载数据
 
     /**
      * 格口操作异常字段
