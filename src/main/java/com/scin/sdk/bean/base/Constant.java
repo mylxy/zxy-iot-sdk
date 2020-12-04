@@ -4,9 +4,10 @@ import com.scin.sdk.bean.battery.BmsData;
 import com.scin.sdk.bean.battery.BmsWarnData;
 import com.scin.sdk.bean.battery.ModelIOData;
 import com.scin.sdk.bean.battery.SensorShockData;
+import com.scin.sdk.bean.cabinet.BoxWarnData;
+import com.scin.sdk.bean.cabinet.CabinetWarnData;
 import com.scin.sdk.bean.cabinet.RefreshData;
 import com.scin.sdk.bean.cabinet.RunStatusData;
-import com.scin.sdk.bean.cabinet.WarnData;
 import com.scin.sdk.bean.share.*;
 
 import java.util.HashMap;
@@ -69,7 +70,8 @@ public class Constant {
         CABINET_DATA_CLASS.put(0x1F, GpsData.class);//换电柜MQTT协议标识
         CABINET_DATA_CLASS.put(0x13, RefreshData.class);//换电柜MQTT协议标识
         CABINET_DATA_CLASS.put(0x14, RunStatusData.class);//换电柜MQTT协议标识
-        CABINET_DATA_CLASS.put(0x60, WarnData.class);//换电柜MQTT协议标识
+        CABINET_DATA_CLASS.put(0x61, CabinetWarnData.class);//换电柜MQTT协议标识
+        CABINET_DATA_CLASS.put(0x62, BoxWarnData.class);//换电柜MQTT协议标识
 
         //车辆中控数据标识与解析类的对应关系
         VEHICLE_DATA_CLASS.put(0x00, StatusData.class);//内部编码标识, 状态数据

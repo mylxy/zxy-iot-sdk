@@ -5,7 +5,6 @@ import com.scin.sdk.bean.base.Message;
 import com.scin.sdk.bean.battery.BmsData;
 import com.scin.sdk.bean.cabinet.RefreshData;
 import com.scin.sdk.bean.cabinet.RunStatusData;
-import com.scin.sdk.bean.cabinet.WarnData;
 import com.scin.sdk.bean.share.GpsData;
 import com.scin.sdk.bean.share.StatusData;
 import com.scin.sdk.exception.BusinessException;
@@ -120,11 +119,6 @@ public class TestClient {
                     if (message.is(RunStatusData.class)) {
                         RunStatusData d = message.data();
                         log.info("运行状态数据={}", JSONObject.toJSONString(d));
-                        continue;
-                    }
-                    if (message.is(WarnData.class)) {
-                        WarnData d = message.data();
-                        log.info("告警数据={}", JSONObject.toJSONString(d));
                         continue;
                     }
                     log.info("未识别数据={}", JSONObject.toJSONString(message));

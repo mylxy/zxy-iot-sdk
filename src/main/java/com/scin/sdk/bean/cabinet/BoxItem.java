@@ -3,6 +3,7 @@ package com.scin.sdk.bean.cabinet;
 import com.scin.sdk.bean.share.Bms;
 import com.scin.sdk.bean.share.BmsStatus;
 import com.scin.sdk.bean.share.BmsWarn;
+import com.scin.sdk.utils.StatusUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -39,6 +40,7 @@ public class BoxItem implements Serializable {
     private Integer noBatteryError;//有到位，无电池异常
     private Integer readBatteryIdError;//读取电池ID异常
     private Integer readBatteryBmsError;//读取电池BMS异常
+    private Integer cabinetWarnError;//柜子告警异常 因柜子告警异常导致的格口异常
     private Integer emptyStatus;//是否包含电池
     private String batteryId;//电池ID
     private BigDecimal batteryCapacity;//电量
@@ -46,6 +48,19 @@ public class BoxItem implements Serializable {
     private BmsStatus bmsStatus;//bms状态信息
     private BmsWarn bmsWarn;//bms告警信息
     private Bms bms;//bms负载数据
+    private Integer boxTempWarnTwo;      //格口二级温度告警
+    private Integer boxChargerWarnTwo;   //格口二级充电器告警
+    private Integer boxBatteryWarnTwo;   //格口二级电池告警
+    private Integer chargerWarnLowTemp;  //充电器过温告警
+
+    /**
+     * 二级告警判断
+     *
+     * @return
+     */
+    public Integer boxWarnStatusTwo() {
+        return StatusUtil.haveOneStatus(boxTempWarnTwo, boxChargerWarnTwo, boxBatteryWarnTwo, chargerWarnLowTemp);
+    }
 
     /**
      * 格口操作异常字段
@@ -53,24 +68,13 @@ public class BoxItem implements Serializable {
      * @return
      */
     public Integer errorStatus() {
-        if (this.queryBoxStatusError != null && this.queryBoxStatusError == 1) {
-            return 1;
-        }
-        if (this.batteryLoginError != null && this.batteryLoginError == 1) {
-            return 1;
-        }
-        if (this.noGoodsError != null && this.noGoodsError == 1) {
-            return 1;
-        }
-        if (this.noBatteryError != null && this.noBatteryError == 1) {
-            return 1;
-        }
-        if (this.readBatteryIdError != null && this.readBatteryIdError == 1) {
-            return 1;
-        }
-        if (this.readBatteryBmsError != null && this.readBatteryBmsError == 1) {
-            return 1;
-        }
-        return 0;
+        return StatusUtil.haveOneStatus(
+                queryBoxStatusError,
+                batteryLoginError,
+                noGoodsError,
+                noBatteryError,
+                readBatteryIdError,
+                readBatteryBmsError
+        );
     }
 }

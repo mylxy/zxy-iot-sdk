@@ -1,5 +1,6 @@
 package com.scin.sdk.bean.cabinet;
 
+import com.scin.sdk.utils.StatusUtil;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -27,5 +28,11 @@ public class RefreshData implements Serializable {
     private Integer networkType;//网络类型 0x00移动网络，0x01wifi网络
     private Integer networkLevel;//信号强度（1字节，0-5）
     private Integer boxNum;//格口数量
+    private Integer cabinetTempWarnTwo ;//柜子二级温度告警
+    private Integer cabinetHumWarnTwo  ;//柜子二级湿度告警
     private List<BoxItem> boxes;//格口数据
+
+    public Integer cabinetWarnStatusTwo() {
+        return StatusUtil.haveOneStatus(cabinetTempWarnTwo, cabinetHumWarnTwo);
+    }
 }
