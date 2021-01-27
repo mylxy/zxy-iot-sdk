@@ -15,9 +15,10 @@ import java.io.Serializable;
 @Data
 public class RunStatusData implements Serializable {
     //0x00闲置状态
-    //0x01人脸识别中
-    //0x02换电状态
-    //0x03升级中
-    //0x04初始化中
+    //0x01换电状态
+    //0x02升级中
+    //0x03人工介入
+    //0x04柜子禁用
+    //0x05告警状态
     private Integer runStatus;
 }

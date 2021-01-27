@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 public class BoxWarnData implements Serializable {
 
-    private Integer boardId;//CCB编号Id
+    private Integer boardId;//主控板编号Id
     private Integer boxId;//格口编号Id
 
     private Integer boxTempWarnOne;      //格口一级温度告警

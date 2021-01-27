@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 public class CabinetWarnData implements Serializable {
 
-    private Integer boardId;//CCB编号Id
+    private Integer boardId;//主控板编号Id
 
     private Integer cabinetTempWarnOne ;//柜子一级温度告警
     private Integer cabinetSmokeWarnOne;//柜子一级烟感告警
