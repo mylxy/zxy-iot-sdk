@@ -24,6 +24,10 @@ public enum SystemStatusEnum implements StatusEnum {
     PARSE_CLASS_SUPPORT(1009, "此解析封装类暂不支持"),
     IO_EXCEPTION(1010, "HTTP请求IOException"),
     CMDKEYOFCLASS_NO_CONFIG(1011, "cmdKey对的数据反序列化未配置"),
+    WARN_INSTANCE_IMPL(1012, "Warn基类warnInstance方法继承类未覆盖"),
+    SUBSCRIBE_RETRY_ERROR(1013, "订阅异常重试次数范围为1~5"),
+    SUBSCRIBE_ACTION_NULL(1014, "订阅数据函数不能为空"),
+    SUBSCRIBE_ENV_NULL(1015, "订阅数据智享云环境未指定"),
     ;
 
     SystemStatusEnum(int code, String description) {

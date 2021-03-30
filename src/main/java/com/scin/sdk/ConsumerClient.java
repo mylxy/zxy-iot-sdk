@@ -1,12 +1,13 @@
 package com.scin.sdk;
 
 import com.alibaba.fastjson.JSONObject;
-import com.scin.sdk.api.AppUser;
+import com.scin.sdk.api.App;
 import com.scin.sdk.api.Authority;
 import com.scin.sdk.bean.base.Message;
 import com.scin.sdk.enums.SystemStatusEnum;
 import com.scin.sdk.exception.BusinessException;
 import com.scin.sdk.utils.HttpUtil;
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.kafka.clients.admin.AdminClientConfig;
@@ -18,6 +19,7 @@ import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.errors.GroupAuthorizationException;
 import org.apache.kafka.common.errors.SaslAuthenticationException;
 import org.apache.kafka.common.errors.TopicAuthorizationException;
+import org.apache.kafka.common.errors.WakeupException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,20 +50,25 @@ public class ConsumerClient {
     private Authority authority;
 
     /**
+     * 数据订阅端
+     */
+    @Getter
+    private KafkaConsumer<String, byte[]> consumer;
+
+    /**
      * 鉴权地址
      */
     private String url = "https://api-iot-company.hzzxxd.com/company/application/subAuth";
 
     public ConsumerClient(String key, String secret) {
-        this.authority = HttpUtil.sign(url, new AppUser(key, secret));
+        this.authority = HttpUtil.sign(url, new App(key, secret));
         this.kafkaConfig = initKafkaConfig();
     }
 
     public ConsumerClient(String url, String key, String secret) {
-        this.authority = HttpUtil.sign(url, new AppUser(key, secret));
+        this.authority = HttpUtil.sign(url, new App(key, secret));
         this.kafkaConfig = initKafkaConfig();
     }
-
 
     /**
      * 重新设置kafka属性信息
@@ -133,8 +140,8 @@ public class ConsumerClient {
         }
         // 数据消费
         kafkaConfig.put(ConsumerConfig.GROUP_ID_CONFIG, "app." + authority.getUsername()+ "." + groupNum);
-        KafkaConsumer<String, byte[]> consumer = null;
         try {
+            logger.info("开始建立数据订阅, threadId={}", Thread.currentThread().getId());
             consumer = new KafkaConsumer<>(kafkaConfig);
             consumer.subscribe(topics);
             while (true) {
@@ -159,6 +166,8 @@ public class ConsumerClient {
             throw BusinessException.of(SystemStatusEnum.KAFKA_TOPIC_NOT_AUTHORIZED);
         } catch (GroupAuthorizationException e) {
             throw BusinessException.of(SystemStatusEnum.KAFKA_GROUP_NOT_AUTHORIZED);
+        } catch (WakeupException e) {
+            logger.info("订阅中断: Wakeup主动取消订阅, threadId={}", Thread.currentThread().getId());
         } catch (Exception e) {
             logger.error("订阅异常:" + e.getMessage(), e);
         } finally {

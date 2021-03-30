@@ -10,13 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 最爱吃小鱼
  */
 public class HttpUtil {
 
-    private static final OkHttpClient CLIENT = new OkHttpClient();
+    private static final OkHttpClient CLIENT = new OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS).build();
     private static final Logger log = LoggerFactory.getLogger(HttpUtil.class);
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 

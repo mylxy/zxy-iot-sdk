@@ -15,5 +15,7 @@
 1.0.18 
 1. 数据添加状态数据解析类型, 接收类型修改
 
+
+
 ## 发布
 mvn clean install deploy -DskipTests -P release -Dgpg.passphrase=baby#520

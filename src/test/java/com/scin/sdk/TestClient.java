@@ -60,16 +60,16 @@ public class TestClient {
 
     @Test
     public void testParse() {
-        String appKey = "RLuNYVI1p4I";
-        String secret = "pbd1dcmGtlvqOfgW";
+//        String appKey = "RLuNYVI1p4I";
+        String appKey = "czIbCCWJ6Ii";
+//        String secret = "pbd1dcmGtlvqOfgW";
+        String secret = "Bad1DHdMKgkEX5K5";
         ConsumerClient client = new ConsumerClient(appKey, secret);
-        client.setProperties("client.id", "hello-");
 
         Set<String> topics = new HashSet<>();
-//        topics.add("parse.gps." + appKey);
-//        //BMS信息中已包含告警，所以不需要另外再订阅
+        topics.add("parse.gps." + appKey);
         topics.add("rsp.report." + appKey);
-//        topics.add("rsp.status." + appKey);
+        topics.add("rsp.status." + appKey);
 
         try {
             client.subscribe(topics, 1, messages -> {

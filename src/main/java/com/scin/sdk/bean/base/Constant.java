@@ -4,12 +4,10 @@ import com.scin.sdk.bean.battery.BmsData;
 import com.scin.sdk.bean.battery.BmsWarnData;
 import com.scin.sdk.bean.battery.ModelIOData;
 import com.scin.sdk.bean.battery.SensorShockData;
-import com.scin.sdk.bean.cabinet.BoxWarnData;
-import com.scin.sdk.bean.cabinet.CabinetWarnData;
-import com.scin.sdk.bean.cabinet.RefreshData;
-import com.scin.sdk.bean.cabinet.RunStatusData;
+import com.scin.sdk.bean.cabinet.*;
 import com.scin.sdk.bean.share.*;
 import com.scin.sdk.bean.vehicle.AccStatusData;
+import com.scin.sdk.bean.vehicle.ControlFaultData;
 import com.scin.sdk.bean.vehicle.NatureData;
 
 import java.util.HashMap;
@@ -72,6 +70,7 @@ public class Constant {
         CABINET_DATA_CLASS.put(0x1F, GpsData.class);//换电柜MQTT协议标识
         CABINET_DATA_CLASS.put(0x13, RefreshData.class);//换电柜MQTT协议标识
         CABINET_DATA_CLASS.put(0x14, RunStatusData.class);//换电柜MQTT协议标识
+        CABINET_DATA_CLASS.put(0x15, BaseConfigInfoData.class);//上报基础配置信息(0x15)
         CABINET_DATA_CLASS.put(0x61, CabinetWarnData.class);//换电柜MQTT协议标识
         CABINET_DATA_CLASS.put(0x62, BoxWarnData.class);//换电柜MQTT协议标识
 
@@ -85,6 +84,7 @@ public class Constant {
         VEHICLE_DATA_CLASS.put(0x1F, GpsData.class);//车辆MQTT协议标识
         VEHICLE_DATA_CLASS.put(0x12, NatureData.class);//车辆MQTT协议标识
         VEHICLE_DATA_CLASS.put(0x14, AccStatusData.class);//车辆MQTT协议标识 acc状态
+        VEHICLE_DATA_CLASS.put(0x21, ControlFaultData.class);//车辆MQTT协议标识 中控故障
     }
 
 

@@ -19,7 +19,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class AppUser implements Serializable {
+public class App implements Serializable {
 
     private String key;
     private String secret;

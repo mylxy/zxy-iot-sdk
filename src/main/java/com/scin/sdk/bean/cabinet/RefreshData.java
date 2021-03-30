@@ -1,6 +1,6 @@
 package com.scin.sdk.bean.cabinet;
 
-import com.scin.sdk.utils.StatusUtil;
+import com.scin.sdk.bean.base.WarnComb;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -29,6 +29,14 @@ public class RefreshData implements Serializable {
     private Integer flood;//水位状态(0代表未淹没，1代表淹没)
     private Integer smoke;//烟感状态(0代表未触发，1代表触发)
     private Integer cabinetDisable;//云端禁用状态(0代表禁用，1代表启用)
+    private Integer totalBatteryCount   ;//总电池数量
+    private Integer canSwapCount        ;//可换电池数量
+    private Integer chargerBatteryCount ;//充电中电池数量
+    private Integer emptyBoxCount       ;//空仓数量
+    private Integer warnBoxCount        ;//故障仓数量
+    private Integer enableBoxCount      ;//启用中仓数量
+
+
 
     //柜子网格数据
     private Integer networkType;//网络类型 0x00移动网络，0x01wifi网络
@@ -41,7 +49,17 @@ public class RefreshData implements Serializable {
     private Integer boxNum;//格口数量
     private List<BoxItem> boxes;//格口数据
 
-    public Integer cabinetWarnStatusTwo() {
-        return StatusUtil.haveOneStatus(cabinetTempWarnTwo, cabinetHumWarnTwo);
+
+    /**
+     * 柜子二级故障
+     *
+     * @return
+     */
+    public WarnComb twoFaultInstance() {
+        WarnComb warn = new WarnComb();
+        warn.add(cabinetTempWarnTwo, "二级温度告警");
+        warn.add(cabinetHumWarnTwo, "二级湿度告警");
+        return warn;
     }
+
 }

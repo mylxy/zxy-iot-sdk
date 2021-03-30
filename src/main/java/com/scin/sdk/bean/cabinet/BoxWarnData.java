@@ -1,5 +1,7 @@
 package com.scin.sdk.bean.cabinet;
 
+import com.scin.sdk.bean.base.WarnBase;
+import com.scin.sdk.bean.base.WarnComb;
 import com.scin.sdk.bean.share.BmsWarn;
 import com.scin.sdk.utils.StatusUtil;
 import lombok.Data;
@@ -30,13 +32,29 @@ public class BoxWarnData implements Serializable {
     private String batteryId;//电池ID
     private BmsWarn bmsWarn;//bms状态信息, 二进制32位字符串，bit大小从左到右
 
-
-    public Integer boxWarnStatusOne() {
-        return StatusUtil.haveOneStatus(boxTempWarnOne, boxHotAerosolWarnOne);
+    /**
+     * 格口一级故障
+     * @return
+     */
+    public WarnComb oneFaultInstance() {
+        WarnComb warn = new WarnComb();
+        warn.add(boxTempWarnOne, "一级温度告警");
+        warn.add(boxHotAerosolWarnOne, "一级热气溶胶触发告警");
+        return warn;
     }
 
-    public Integer boxWarnStatusTwo() {
-        return StatusUtil.haveOneStatus(boxTempWarnTwo, boxChargerWarnTwo, boxBatteryWarnTwo, chargerWarnLowTemp);
+    /**
+     * 格口二级故障
+     *
+     * @return
+     */
+    public WarnComb twoFaultInstance() {
+        WarnComb warn = new WarnComb();
+        warn.add(boxTempWarnTwo, "二级温度告警");
+        warn.add(boxChargerWarnTwo, "二级充电器告警");
+        warn.add(boxBatteryWarnTwo, "二级电池告警");
+        warn.add(chargerWarnLowTemp, "充电器过温告警");
+        return warn;
     }
 
 
