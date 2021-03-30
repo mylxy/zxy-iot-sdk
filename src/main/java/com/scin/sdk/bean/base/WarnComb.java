@@ -59,7 +59,7 @@ public class WarnComb implements Serializable {
      */
     public String warnDescriptions() {
         if (CollectionUtils.isEmpty(descs)) {
-            return "";
+            return null;
         }
         return String.join(",", descs);
     }

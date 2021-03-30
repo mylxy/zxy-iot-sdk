@@ -2,6 +2,7 @@ package com.scin.sdk.bean.cabinet;
 
 import com.scin.sdk.bean.base.WarnComb;
 import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -49,6 +50,13 @@ public class RefreshData implements Serializable {
     private Integer boxNum;//格口数量
     private List<BoxItem> boxes;//格口数据
 
+
+    public Integer getBoxNum() {
+        if (boxNum == null) {
+            boxNum = CollectionUtils.isEmpty(boxes) ? 0 : boxes.size();
+        }
+        return boxNum;
+    }
 
     /**
      * 柜子二级故障

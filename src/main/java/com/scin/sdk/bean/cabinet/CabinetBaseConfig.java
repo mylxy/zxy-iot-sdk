@@ -16,7 +16,7 @@ public class CabinetBaseConfig {
 
 
     private Integer boardId;//主控板编号Id
-    private Integer iccid;//柜子iccid
+    private String iccid;//柜子iccid
     private Integer maxPower;//最大充电功率
     private Integer logStatus;//实时日志状态(0代表关闭上传，1代表开启上传)
     private Integer openLightTime;//顶灯打开时间(s)
